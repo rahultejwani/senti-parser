@@ -5,5 +5,5 @@ Cleaning the text, includes interpreting the netLingo like, lol, fyi. Extracting
 
 
 
-More t come shortly
+More to come shortly
 ============
