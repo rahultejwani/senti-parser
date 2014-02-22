@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import rt.textbean.dev.propertyBean;
-
+/*
+ * @Author rahultejwani
+ */
 public class RawTextBean {
 	static String sourcePath = (new propertyBean().getSourcePath());
 	private BufferedReader br;

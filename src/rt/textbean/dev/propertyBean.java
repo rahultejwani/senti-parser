@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+/*
+ * @Author rahultejwani
+ */
 public class propertyBean {
 	private String SourcePath;
 	private String LexiconPath;

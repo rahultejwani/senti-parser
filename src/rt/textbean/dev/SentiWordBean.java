@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Set;
-
 import rt.textbean.dev.propertyBean;
+
+/*
+ * @Author rahultejwani
+ */
 public class SentiWordBean {
 	private HashMap<String, val> Dictionary = new HashMap<>();
 	public SentiWordBean()
