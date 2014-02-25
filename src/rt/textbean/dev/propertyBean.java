@@ -11,6 +11,7 @@ public class propertyBean {
 	private String SourcePath;
 	private String LexiconPath;
 	private String FeaturePath;
+	private String AdverbPath;
 	public propertyBean()
 	{
 		Properties prop = new Properties();
@@ -25,6 +26,7 @@ public class propertyBean {
     		SourcePath = prop.getProperty("SourcePath");
     		LexiconPath = prop.getProperty("LexiconPath");
     		FeaturePath = prop.getProperty("FeatureFilePath");
+    		setAdverbPath(prop.getProperty("AdverbPath"));
     		
      
     	} catch (IOException ex) {
@@ -51,6 +53,14 @@ public class propertyBean {
 
 	public String getFeaturePath() {
 		return FeaturePath;
+	}
+
+	public String getAdverbPath() {
+		return AdverbPath;
+	}
+
+	private void setAdverbPath(String adverbPath) {
+		AdverbPath = adverbPath;
 	}
 
 	
