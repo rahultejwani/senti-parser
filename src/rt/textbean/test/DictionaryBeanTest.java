@@ -7,11 +7,11 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import rt.textbean.dev.DictionaryBean;
-import rt.textbean.dev.val;
+import rt.textbean.dev.WordInfo;
 
 public class DictionaryBeanTest {
 	DictionaryBean db = new DictionaryBean();
-	HashMap<String, val> dict = db.getDictionary();
+	HashMap<String, WordInfo> dict = db.getDictionary();
 	HashMap<String, Double> adv = db.getAdverbMap();
 	
 	public DictionaryBeanTest()

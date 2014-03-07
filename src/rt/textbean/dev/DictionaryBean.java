@@ -1,22 +1,17 @@
 package rt.textbean.dev;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.Set;
-
 import rt.textbean.dev.propertyBean;
 
 /*
  * @Author rahultejwani
  */
 public class DictionaryBean{
-	private HashMap<String, val> Dictionary = new HashMap<>();
+	private HashMap<String, WordInfo> Dictionary = new HashMap<>();
 	private HashMap<String, Double> Adverb = new HashMap<>();
 	public DictionaryBean()
 	{
@@ -28,7 +23,7 @@ public class DictionaryBean{
 			while((line = br.readLine()) != null)
 			{
 				String [] row = line.split(",");
-				val v = new val(row[1].charAt(0),Double.parseDouble(row[2]));
+				WordInfo v = new WordInfo(row[1].charAt(0),Double.parseDouble(row[2]));
 				Dictionary.put(row[0], v);
 			}
 			System.out.println("Filliing Adverb map");
@@ -55,7 +50,7 @@ public class DictionaryBean{
 	}
 	
 	
-	public HashMap<String, val> getDictionary() {
+	public HashMap<String, WordInfo> getDictionary() {
 		return this.Dictionary;
 	}
 	public HashMap<String, Double> getAdverbMap() {
@@ -63,7 +58,7 @@ public class DictionaryBean{
 	}
 	
 	public static void main(String[] args) {
-		DictionaryBean swb = new DictionaryBean();
+	//	DictionaryBean swb = new DictionaryBean();
 	//	HashMap<String, Double> dict =swb.getAdverbMap();
 	//	Set<String> set = dict.keySet();
 //		for (String string : set) {

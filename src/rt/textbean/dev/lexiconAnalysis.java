@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class lexiconAnalysis {
 	
-	private HashMap<String, val> dictionary;
+	private HashMap<String, WordInfo> dictionary;
 	Double synsetScore;
 	@SuppressWarnings("resource")
 	public lexiconAnalysis() throws IOException
 	{
-		dictionary = new HashMap<String, val>();
+		dictionary = new HashMap<String, WordInfo>();
 		HashMap<String, HashMap<Integer, Double>> tempDictionary = new HashMap<String, HashMap<Integer, Double>>();
 		BufferedReader csv = null;
 		try
@@ -80,7 +80,7 @@ public class lexiconAnalysis {
 				}
 				score /= sum;
 				String [] temp = word.split("#");
-				val v = new val(temp[1].charAt(0), score);
+				WordInfo v = new WordInfo(temp[1].charAt(0), score);
 				dictionary.put(temp[0], v);
 			}
 		}
@@ -90,7 +90,7 @@ public class lexiconAnalysis {
 		}
 
 	}
-	public HashMap<String, val> getDictionary()
+	public HashMap<String, WordInfo> getDictionary()
 	{
 		return this.dictionary;
 	}

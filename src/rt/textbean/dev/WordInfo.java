@@ -1,10 +1,10 @@
 package rt.textbean.dev;
 
-public class val
+public class WordInfo
 {
 	private double score = 0;
 	private char pos;
-	public val(char c, double d)
+	public WordInfo(char c, double d)
 	{
 		this.setPos(c);
 		this.setScore(d);
