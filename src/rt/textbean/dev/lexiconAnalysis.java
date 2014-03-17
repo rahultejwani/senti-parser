@@ -1,7 +1,9 @@
 package rt.textbean.dev;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +16,14 @@ public class lexiconAnalysis {
 	private HashMap<String, WordInfo> dictionary;
 	Double synsetScore;
 	@SuppressWarnings("resource")
-	public lexiconAnalysis() throws IOException
+	public lexiconAnalysis() 
 	{
 		dictionary = new HashMap<String, WordInfo>();
 		HashMap<String, HashMap<Integer, Double>> tempDictionary = new HashMap<String, HashMap<Integer, Double>>();
 		BufferedReader csv = null;
 		try
 		{
-			csv = new BufferedReader(new FileReader(new propertyBean().getLexiconPath()));
+			csv = new BufferedReader(new FileReader(new propertyBean().getSentiWordPath()));
 			int lineNumber = 0;
 			String line;
 			while ((line = csv.readLine()) != null) {
@@ -79,12 +81,30 @@ public class lexiconAnalysis {
 					sum += 1.0 / (double) setScore.getKey();
 				}
 				score /= sum;
-				String [] temp = word.split("#");
-				WordInfo v = new WordInfo(temp[1].charAt(0), score);
-				dictionary.put(temp[0], v);
+				//putting the average score of words with multiple meanings
+				
+				
+					dictionary.put(word, new WordInfo('n', score));
+				
 			}
+			csv.close();
+			//Trying to print out the map to a text file
+			BufferedWriter bufferedWriter = new BufferedWriter(
+					new FileWriter("/home/rahul/Development/SentimentAnalysis/check1_01.csv"));
+			for(Map.Entry<String, WordInfo> entry: dictionary.entrySet())
+			{
+				
+				bufferedWriter.write(entry.getKey());
+				bufferedWriter.write(",");
+				bufferedWriter.write(String.valueOf(entry.getValue().getScore()));
+				bufferedWriter.write(",");
+				bufferedWriter.write(String.valueOf(entry.getValue().getPos()));
+				bufferedWriter.newLine();
+			}
+			bufferedWriter.close();
+		
 		}
-		catch(Exception e)
+		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -93,6 +113,9 @@ public class lexiconAnalysis {
 	public HashMap<String, WordInfo> getDictionary()
 	{
 		return this.dictionary;
+	}
+	public static void main(String[] args) {
+		lexiconAnalysis la = new lexiconAnalysis();
 	}
 
 }

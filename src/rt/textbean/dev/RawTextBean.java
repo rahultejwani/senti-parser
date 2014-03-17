@@ -25,11 +25,8 @@ public class RawTextBean {
 		while ((line = br.readLine()) != null) {
 			System.out.println(line);
 			classifier.add(Character.getNumericValue(line.charAt(0)));
-			//	System.out.println(Character.getNumericValue(line.charAt(0)));
 			line = line.substring(2);
-
 			lines.add(line);
-			//count++;
 		}
 	}
 	public ArrayList<String> getLines()

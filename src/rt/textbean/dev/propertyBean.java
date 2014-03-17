@@ -12,6 +12,7 @@ public class propertyBean {
 	private String LexiconPath;
 	private String FeaturePath;
 	private String AdverbPath;
+	private String SentiWordPath;
 	public propertyBean()
 	{
 		Properties prop = new Properties();
@@ -26,6 +27,7 @@ public class propertyBean {
     		SourcePath = prop.getProperty("SourcePath");
     		LexiconPath = prop.getProperty("LexiconPath");
     		FeaturePath = prop.getProperty("FeatureFilePath");
+    		setSentiWordPath(prop.getProperty("SentiWordPath"));
     		setAdverbPath(prop.getProperty("AdverbPath"));
     		
      
@@ -61,6 +63,14 @@ public class propertyBean {
 
 	private void setAdverbPath(String adverbPath) {
 		AdverbPath = adverbPath;
+	}
+
+	public String getSentiWordPath() {
+		return SentiWordPath;
+	}
+
+	public void setSentiWordPath(String sentiWordPath) {
+		SentiWordPath = sentiWordPath;
 	}
 
 	

@@ -1,5 +1,9 @@
 package rt.textbean.dev;
-
+/**
+ * Structure class used for storing POS of the word and its polarity score.
+ * @author rahul
+ *
+ */
 public class WordInfo
 {
 	private double score = 0;

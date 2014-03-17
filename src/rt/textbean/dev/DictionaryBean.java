@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import rt.textbean.dev.propertyBean;
 
-/*
+/**
  * @Author rahultejwani
  */
 public class DictionaryBean{
@@ -28,8 +28,6 @@ public class DictionaryBean{
 			}
 			System.out.println("Filliing Adverb map");
 			br = new BufferedReader(new FileReader(new propertyBean().getAdverbPath()));
-		//	bw = new BufferedWriter(new FileWriter("/home/rahul/Development/SentimentAnalysis/adverbScore.csv"));
-		//	System.out.println("Writing to file");
 			while((line = br.readLine()) != null)
 			{
 				String [] row = line.split("\t");
@@ -37,11 +35,11 @@ public class DictionaryBean{
 			}
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		
 			System.out.println("file not found");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("IO exception");
 			e.printStackTrace();
 		}
@@ -58,13 +56,8 @@ public class DictionaryBean{
 	}
 	
 	public static void main(String[] args) {
-	//	DictionaryBean swb = new DictionaryBean();
-	//	HashMap<String, Double> dict =swb.getAdverbMap();
-	//	Set<String> set = dict.keySet();
-//		for (String string : set) {
-//			System.out.println(string+ "\t" + dict.get(string));
-//			
-//		}
+	
+
 	}
 	
 }
