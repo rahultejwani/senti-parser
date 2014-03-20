@@ -114,8 +114,8 @@ public class lexiconAnalysis {
 	{
 		return this.dictionary;
 	}
-	public static void main(String[] args) {
-		lexiconAnalysis la = new lexiconAnalysis();
-	}
+//	public static void main(String[] args) {
+//		lexiconAnalysis la = new lexiconAnalysis();
+//	}
 
 }
