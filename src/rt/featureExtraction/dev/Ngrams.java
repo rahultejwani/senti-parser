@@ -6,46 +6,50 @@ public class Ngrams {
 	
 	private String sentence;
 	private String[] WordSplit;
+	/**
+	 * Constructor that takes in the string to be broken into N-grams
+	 * @param string
+	 */
 	public Ngrams(String string)
 	{
 		this.setSentence(string);
 		this.setWordSplit(string.split("\\s"));
 	}
-	public ArrayList<String>  getBigrams()
+	/**
+	 * Ex. Input String in the constructor is "I like java"
+	 * and user calls getNgram(2);
+	 * output: {"i_like","like_java"}
+	 * @param n (Size of the N)
+	 * @return Array List of n-grams of string in rder
+	 */
+	public ArrayList<String>  getNgrams(int n)
 	{
-		ArrayList<String> bigrams = new ArrayList<>();
-		for (int i = 0; i < WordSplit.length-1; i++) {
-			String bigram = WordSplit[i] + "_" + WordSplit[i+1];
-			bigrams.add(bigram);
+		ArrayList<String> ngrams = new ArrayList<>();
+		String ngram= "";
+		for (int i = 0; i < WordSplit.length-(n-1); i++) {
+			for (int j = 0; j < n; j++) {
+				ngram+= WordSplit[i+j] + "_";
+			}
+			if(ngram.endsWith("_"))
+				ngram= ngram.substring(0, ngram.length()-1);
+			ngrams.add(ngram.toLowerCase());
+			ngram = "";
 		}
-		return bigrams;
-		
-		
-		
+		return ngrams;		
 	}
-	public ArrayList<String>  getTrigrams()
-	{
-		ArrayList<String> trigrams = new ArrayList<>();
-		for (int i = 0; i < WordSplit.length-2; i++) {
-			String trigram = WordSplit[i] + "_" + WordSplit[i+1] + "_" + WordSplit[i+2];
-			trigrams.add(trigram);
-		}
-		return trigrams;
-		
-		
-		
-	}
+	
 	public String[] getWordSplit() {
 		return WordSplit;
 	}
-	public void setWordSplit(String[] wordSplit) {
+	private void setWordSplit(String[] wordSplit) {
 		WordSplit = wordSplit;
 	}
 	public String getSentence() {
 		return sentence;
 	}
-	public void setSentence(String sentence) {
+	private void setSentence(String sentence) {
 		this.sentence = sentence;
 	}
+	
 
 }
