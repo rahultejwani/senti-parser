@@ -1,7 +1,11 @@
 package rt.featureExtraction.dev;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author rahultejwani
+ *
+ */
 public class Ngrams {
 	
 	private String sentence;
@@ -20,7 +24,7 @@ public class Ngrams {
 	 * and user calls getNgram(2);
 	 * output: {"i_like","like_java"}
 	 * @param n (Size of the N)
-	 * @return Array List of n-grams of string in rder
+	 * @return Array List of n-grams of string in order
 	 */
 	public ArrayList<String>  getNgrams(int n)
 	{

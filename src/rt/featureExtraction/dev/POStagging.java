@@ -1,7 +1,11 @@
 package rt.featureExtraction.dev;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
-
+/**
+ * 
+ * @author rahultejwani
+ *
+ */
 public class POStagging {
 	private String sentence;
 	/**
@@ -13,6 +17,11 @@ public class POStagging {
 		setSentence(stringToTag);
 	}
 	
+	/**
+	 * 
+	 * @return the tagged Sentence
+	 * example:
+	 */
 	public String tag()
 	{
 		

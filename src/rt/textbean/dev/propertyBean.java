@@ -13,6 +13,7 @@ public class propertyBean {
 	private String FeaturePath;
 	private String AdverbPath;
 	private String SentiWordPath;
+	private String ReviewPath;
 	public propertyBean()
 	{
 		Properties prop = new Properties();
@@ -29,6 +30,7 @@ public class propertyBean {
     		FeaturePath = prop.getProperty("FeatureFilePath");
     		setSentiWordPath(prop.getProperty("SentiWordPath"));
     		setAdverbPath(prop.getProperty("AdverbPath"));
+    		setReviewPath(prop.getProperty("ReviewPath"));
     		
      
     	} catch (IOException ex) {
@@ -69,8 +71,16 @@ public class propertyBean {
 		return SentiWordPath;
 	}
 
-	public void setSentiWordPath(String sentiWordPath) {
+	private void setSentiWordPath(String sentiWordPath) {
 		SentiWordPath = sentiWordPath;
+	}
+
+	public String getReviewPath() {
+		return ReviewPath;
+	}
+
+	private void setReviewPath(String reviewPath) {
+		ReviewPath = reviewPath;
 	}
 
 	
