@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import rt.featureExtraction.dev.Ngrams;
 import rt.featureExtraction.dev.POStagging;
+import rt.textbean.dev.DictionaryBean;
 import rt.textbean.dev.ExtractJsonReviews;
 
 public class Main {
@@ -26,8 +27,11 @@ public class Main {
 		*/
 		
 		//JSON object test
-		System.out.println("JSON object Test");
-		ExtractJsonReviews ejr = new ExtractJsonReviews();
+	//	System.out.println("JSON object Test");
+	//	ExtractJsonReviews ejr = new ExtractJsonReviews();
+		
+		//
+		DictionaryBean db = new DictionaryBean();
 		
 	}
 	
