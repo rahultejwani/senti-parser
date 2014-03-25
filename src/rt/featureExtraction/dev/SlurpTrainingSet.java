@@ -28,10 +28,13 @@ public class SlurpTrainingSet {
 		br = new BufferedReader(new FileReader(sourcePath));
 		String line = null;
 		while ((line = br.readLine()) != null) {
-			String[] row = line.split("\\t");
-			lines.add(row[0]);
-			polarity.add(Integer.parseInt(row[1]));
-			intensity.add(Integer.parseInt(row[2]));
+			String[] row = line.split("~~#~");
+			if(row.length==3)
+			{
+				lines.add(row[0]);
+				polarity.add(Integer.parseInt(row[1]));
+				intensity.add(Integer.parseInt(row[2]));
+			}
 		}
 	}
 	public ArrayList<String> getLines()

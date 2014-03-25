@@ -6,18 +6,26 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import rt.textbean.dev.DictionaryBean;
 import rt.textbean.dev.propertyBean;
 
 
 public class FeatureExtractionPolarity {
 	private HashMap<String, Integer> emotScoreMap = new HashMap<String,Integer>();
 	private HashMap<String, Integer> negationList = new HashMap<>();
-
-	public FeatureExtractionPolarity()
+	private Ngrams ngrams;
+	private String review;
+	private static HashMap<String, Double> dictionary = new DictionaryBean().getDictionary();
+	String[] BagOfWords;
+	public FeatureExtractionPolarity(String review)
 	{
-		
+		this.review = review;
+		ngrams =  new Ngrams(review);
+		BagOfWords = ngrams.getWordSplit();
 		negationListMap();
 		fillEmoticonMap();
 		
@@ -85,14 +93,16 @@ public class FeatureExtractionPolarity {
 
 
 	
-	public int getEmotcionScore(String str)
+	public int getEmotcionScore()
 	{
-		
 		int netScore = 0;
-		
+		for (Map.Entry<String, Integer> e : emotScoreMap.entrySet()) {
+			if(review.contains(e.getKey()))
+				netScore+=e.getValue();
+		}
 		return netScore;
 	}
-	public double getPunctuationScore(String str)
+	public double getPunctuationScore()
 	{
 		int exclamationCount = 0;
 		int questionCount = 0;
@@ -105,17 +115,17 @@ public class FeatureExtractionPolarity {
 		 * as a individual Sentence
 		 */
 		Pattern pattern = Pattern.compile("[.!?]");
-		Matcher m = pattern.matcher(str);
+		Matcher m = pattern.matcher(review);
 		while (m.find()) {
 
-			if(str.charAt(m.start()) == '!')
+			if(review.charAt(m.start()) == '!')
 			{
 				if((m.start() - prevStart) > 2)
 				{
 					exclamationCount++;
 				}
 			}
-			else if(str.charAt(m.start()) == '?')
+			else if(review.charAt(m.start()) == '?')
 			{
 				if((m.start() - prevStart) > 2)
 				{
@@ -153,20 +163,51 @@ public class FeatureExtractionPolarity {
 		return count;
 	}
 
-	public double getUnigramScore(String str)
+	public double getUnigramScore()
 	{
 		double score =0;
+		
+		for (String string : BagOfWords) {
+			if(dictionary.containsKey(string + "#a"))
+				score+=dictionary.get(string + "#a");
+			else if (dictionary.containsKey(string + "#r"))
+				score+=dictionary.get(string + "#r");
+			else if (dictionary.containsKey(string + "#n"))
+				score+=dictionary.get(string + "#n");
+			else if (dictionary.containsKey(string + "#v"))
+				score+=dictionary.get(string + "#v");	
+			
+		}
 		
 		return score;
 	}
 
-	public double getBigramFirstScore(String str)
+	public double getBigramFirstScore()
 	{
+		ArrayList<String> bigrams = ngrams.getNgrams(2);
 		double score =0;
 		
-		return score;	
+		for (String string : bigrams) {
+			if(dictionary.containsKey(string + "#a"))
+				score+=dictionary.get(string + "#a");
+			else if (dictionary.containsKey(string + "#r"))
+				score+=dictionary.get(string + "#r");
+			else if (dictionary.containsKey(string + "#n"))
+				score+=dictionary.get(string + "#n");
+			else if (dictionary.containsKey(string + "#v"))
+				score+=dictionary.get(string + "#v");
+			
+		}
+		
+		return score*2;	
 	}
-
+	
+	public int getWordCount()
+	{
+		return this.BagOfWords.length;
+	}
+	
+	
 	public void writeToFile()
 	{
 		

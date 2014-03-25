@@ -20,10 +20,13 @@ public class ExtractJsonReviews {
 		BufferedWriter bufferedWriter;
 		try {
 			bufferedWriter = new BufferedWriter(
-					new FileWriter("/home/rahul/Development/SentimentAnalysis/parsed_reviews.csv"));
+					new FileWriter("/home/rahul/Development/SentimentAnalysis/test/parsed_reviews.csv"));
 			br = new BufferedReader(new FileReader(new propertyBean().getReviewPath()));
 			String line;
 			int count = 0;
+			for (int i = 0; i < 2500; i++) {
+				br.readLine();
+			}
 			while((line = br.readLine()) != null)
 			{
 				Object obj = parser.parse(line);
@@ -35,9 +38,9 @@ public class ExtractJsonReviews {
 				if(rating == 5)
 				{
 					bufferedWriter.write(text);;
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("1");
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("1");
 					bufferedWriter.newLine();
 				}
@@ -45,9 +48,9 @@ public class ExtractJsonReviews {
 				else if(rating == 1)
 				{
 					bufferedWriter.write(text);
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("0");
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("0");
 					bufferedWriter.newLine();
 				}
@@ -55,9 +58,9 @@ public class ExtractJsonReviews {
 				else if(rating == 3)
 				{
 					bufferedWriter.write(text);
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("1");
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("0");
 					bufferedWriter.newLine();
 				}
@@ -65,15 +68,15 @@ public class ExtractJsonReviews {
 				else if(rating == 2)
 				{
 					bufferedWriter.write(text);
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("0");
-					bufferedWriter.write("\t");
+					bufferedWriter.write("~~#~");
 					bufferedWriter.write("1");
 					bufferedWriter.newLine();
 				}
 				count++;
 				//taking first 1500 for testing, will scale the values in future
-				if(count>1500)
+				if(count>5000)
 					break;
 				
 				//System.out.println(name);
