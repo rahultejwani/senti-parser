@@ -4,20 +4,23 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WritePolarityFeatures {
 	private ArrayList<String> lines;
 	private ArrayList<Integer> polarity;
-	private ArrayList<Integer> intensity;
-	SlurpTrainingSet sts ;
+	private HashMap<String, Integer> UnigramFeatureSet;
+//	private ArrayList<Integer> intensity;
+	SlurpTrainingSetPolarity sts ;
 	public WritePolarityFeatures() {
 		
 		try {
 			
-			sts = new SlurpTrainingSet();
+			sts = new SlurpTrainingSetPolarity();
 			this.lines = sts.getLines();
-			this.intensity = sts.getIntensityList();
+		//	this.intensity = sts.getIntensityList();
 			this.polarity = sts.getPolarityList();
+			this.UnigramFeatureSet = sts.getUnigramFeatureSet();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,7 +36,8 @@ public class WritePolarityFeatures {
 		int count = 0;
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(
-					new FileWriter("/home/rahul/Development/SentimentAnalysis/features/featurePolarityTest_1_01.csv"));
+					new FileWriter("/home/rahul/Development/SentimentAnalysis/features"
+							+ "/featurePolarity_1_04_withNegation.csv"));
 			for (String string : lines) {
 				FeatureExtractionPolarity fep =  new FeatureExtractionPolarity(string);
 		//		bufferedWriter.write(String.valueOf(fep.getWordCount()));
@@ -44,6 +48,8 @@ public class WritePolarityFeatures {
 				bufferedWriter.write(String.valueOf(fep.getUnigramScore()));
 				bufferedWriter.write(",");
 				bufferedWriter.write(String.valueOf(fep.getBigramFirstScore()));
+				bufferedWriter.write(",");
+				bufferedWriter.write(String.valueOf(fep.getTrigramScore()));
 				bufferedWriter.write(",");
 				bufferedWriter.write(String.valueOf(fep.getEmotcionScore()));
 				

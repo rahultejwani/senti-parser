@@ -1,17 +1,13 @@
 
 package rt.featureExtraction.dev;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import rt.textbean.dev.DictionaryBean;
-import rt.textbean.dev.propertyBean;
+
 
 
 public class FeatureExtractionPolarity {
@@ -19,19 +15,25 @@ public class FeatureExtractionPolarity {
 	private HashMap<String, Integer> negationList = new HashMap<>();
 	private Ngrams ngrams;
 	private String review;
+	private int  NumOfSentences = 0;
 	private static HashMap<String, Double> dictionary = new DictionaryBean().getDictionary();
-	String[] BagOfWords;
+	private String[] BagOfWords;
+	private ArrayList<String> Lines;
+	
 	public FeatureExtractionPolarity(String review)
 	{
 		this.review = review;
 		ngrams =  new Ngrams(review);
+		this.Lines = new ArrayList<>();
 		BagOfWords = ngrams.getWordSplit();
 		negationListMap();
 		fillEmoticonMap();
+		BreakInLines();
 		
-
 	}
-
+	public void  cleanReview(){
+		review = review.replaceAll("(..)+", "");
+	}
 	public void fillEmoticonMap()
 	{
 		//happy emoticons
@@ -51,10 +53,9 @@ public class FeatureExtractionPolarity {
 		this.emotScoreMap.put("</3", -1);
 		//this.emotScoreMap.put("", 0);
 
-
-
-
-	}
+}
+	
+	
 	public void negationListMap()
 	{
 		this.negationList.put("no", -1);
@@ -92,7 +93,7 @@ public class FeatureExtractionPolarity {
 	}
 
 
-	
+
 	public int getEmotcionScore()
 	{
 		int netScore = 0;
@@ -102,91 +103,57 @@ public class FeatureExtractionPolarity {
 		}
 		return netScore;
 	}
-	public double getPunctuationScore()
-	{
-		int exclamationCount = 0;
-		int questionCount = 0;
-		int dotCount = 0;
-		int prevStart = -3;
-		double punctuationScore = 0.0f;
-		/*
-		 * Thing to consider.......
-		 * if semicolon is found then split the sentence and each split act
-		 * as a individual Sentence
-		 */
-		Pattern pattern = Pattern.compile("[.!?]");
-		Matcher m = pattern.matcher(review);
-		while (m.find()) {
-
-			if(review.charAt(m.start()) == '!')
-			{
-				if((m.start() - prevStart) > 2)
-				{
-					exclamationCount++;
-				}
-			}
-			else if(review.charAt(m.start()) == '?')
-			{
-				if((m.start() - prevStart) > 2)
-				{
-					questionCount++;
-				}
-			}
-			else
-			{
-				if((m.start() - prevStart) > 2)
-				{
-					dotCount++;
-				}
-			}
-			prevStart = m.start();  
-		}
-		punctuationScore =  ((0.8 * exclamationCount + 0.1 * questionCount + 0.1 * dotCount));
-
-		return punctuationScore;
-	}
 
 
 
 
-	public int getCapitalScore(String str)
-	{
-		int count =0;
-		Pattern pattern = Pattern.compile("\\s[A-Z]+\\s");
-		Matcher m = pattern.matcher(str);
-		while (m.find())
-		{
-			if((m.end()-m.start()) > 2)
-				count++;
 
-		}
-		return count;
-	}
+
 
 	public double getUnigramScore()
 	{
+		boolean b = false;
 		double score =0;
-		
-		for (String string : BagOfWords) {
-			if(dictionary.containsKey(string + "#a"))
-				score+=dictionary.get(string + "#a");
-			else if (dictionary.containsKey(string + "#r"))
-				score+=dictionary.get(string + "#r");
-			else if (dictionary.containsKey(string + "#n"))
-				score+=dictionary.get(string + "#n");
-			else if (dictionary.containsKey(string + "#v"))
-				score+=dictionary.get(string + "#v");	
-			
+		double lineScore = 0;
+		for (String line : Lines) {
+			String[] sentence = line.split("\\s+");
+			b = false;
+			for (String string : sentence) {
+
+				if(negationList.containsKey(string) || b){
+					b = true;
+					if(dictionary.containsKey(string + "#a"))
+						lineScore+=(dictionary.get(string + "#a")* -1);
+					else if (dictionary.containsKey(string + "#r"))
+						lineScore+=(dictionary.get(string + "#r") * -1);
+					else if (dictionary.containsKey(string + "#n"))
+						lineScore+=(dictionary.get(string + "#n") * -1);
+					else if (dictionary.containsKey(string + "#v"))
+						lineScore+=(dictionary.get(string + "#v") * -1);	
+				}
+				else
+				{
+					if(dictionary.containsKey(string + "#a"))
+						lineScore+=dictionary.get(string + "#a");
+					else if (dictionary.containsKey(string + "#r"))
+						lineScore+=dictionary.get(string + "#r");
+					else if (dictionary.containsKey(string + "#n"))
+						lineScore+=dictionary.get(string + "#n");
+					else if (dictionary.containsKey(string + "#v"))
+						lineScore+=dictionary.get(string + "#v");
+				}
+			}
+			score += lineScore;
 		}
-		
-		return score;
+
+		return score/NumOfSentences;
 	}
 
 	public double getBigramFirstScore()
 	{
 		ArrayList<String> bigrams = ngrams.getNgrams(2);
 		double score =0;
-		
+
 		for (String string : bigrams) {
 			if(dictionary.containsKey(string + "#a"))
 				score+=dictionary.get(string + "#a");
@@ -196,22 +163,58 @@ public class FeatureExtractionPolarity {
 				score+=dictionary.get(string + "#n");
 			else if (dictionary.containsKey(string + "#v"))
 				score+=dictionary.get(string + "#v");
-			
+
 		}
-		
-		return score*2;	
+
+		return score;	
 	}
-	
+
+	public double getTrigramScore()
+	{
+		ArrayList<String> trigrams = ngrams.getNgrams(3);
+		double score =0;
+
+		for (String string : trigrams) {
+			if(dictionary.containsKey(string + "#a"))
+				score+=dictionary.get(string + "#a");
+			else if (dictionary.containsKey(string + "#r"))
+				score+=dictionary.get(string + "#r");
+			else if (dictionary.containsKey(string + "#n"))
+				score+=dictionary.get(string + "#n");
+			else if (dictionary.containsKey(string + "#v"))
+				score+=dictionary.get(string + "#v");
+
+		}
+
+		return score;	
+	}
+
 	public int getWordCount()
 	{
 		return this.BagOfWords.length;
 	}
-	
-	
-	public void writeToFile()
+	/**
+	 * Extract out sentences from the reviews.
+	 * to take into account the negative lists
+	 */
+
+	private void BreakInLines()
 	{
-		
+		//this.Lines = review.split(". ");
+		BreakIterator border = BreakIterator.getSentenceInstance(Locale.US);
+		border.setText(review);
+	//	System.out.println(review);
+		int start = border.first();
+		//iterate, creating sentences out of all the Strings between the given boundaries
+		for (int end = border.next(); end != BreakIterator.DONE; start = end, end = border.next()) {
+			//System.out.println(review.substring(start,end));
+			Lines.add(review.substring(start, end));
+			NumOfSentences++;
+		}
+		//System.out.println(NumOfSentences);
 	}
+
+
 
 
 

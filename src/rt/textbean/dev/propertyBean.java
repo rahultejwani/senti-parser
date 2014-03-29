@@ -14,6 +14,8 @@ public class propertyBean {
 	private String AdverbPath;
 	private String SentiWordPath;
 	private String ReviewPath;
+	private String IntensityTraining;
+	private String PolarityTraining;
 	public propertyBean()
 	{
 		Properties prop = new Properties();
@@ -31,7 +33,8 @@ public class propertyBean {
     		setSentiWordPath(prop.getProperty("SentiWordPath"));
     		setAdverbPath(prop.getProperty("AdverbPath"));
     		setReviewPath(prop.getProperty("ReviewPath"));
-    		
+    		setPolarityTraining(prop.getProperty("PolarityTraining"));
+    		setIntensityTraining(prop.getProperty("IntensityTraining"));
      
     	} catch (IOException ex) {
     		ex.printStackTrace();
@@ -81,6 +84,22 @@ public class propertyBean {
 
 	private void setReviewPath(String reviewPath) {
 		ReviewPath = reviewPath;
+	}
+
+	public String getIntensityTraining() {
+		return IntensityTraining;
+	}
+
+	private void setIntensityTraining(String intensityTraining) {
+		IntensityTraining = intensityTraining;
+	}
+
+	public String getPolarityTraining() {
+		return PolarityTraining;
+	}
+
+	private void setPolarityTraining(String polarityTraining) {
+		PolarityTraining = polarityTraining;
 	}
 
 	
