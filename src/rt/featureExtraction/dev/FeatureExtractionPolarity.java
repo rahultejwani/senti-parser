@@ -1,5 +1,9 @@
 
 package rt.featureExtraction.dev;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,17 +23,28 @@ public class FeatureExtractionPolarity {
 	private static HashMap<String, Double> dictionary = new DictionaryBean().getDictionary();
 	private String[] BagOfWords;
 	private ArrayList<String> Lines;
-	
+	private BufferedReader br;
+	private static HashMap<String, Integer> unigramFeatureSet;
+	private HashMap<Integer, Boolean> reviewUnigrams = new HashMap<>();
+	StopWords stopwords = new StopWords();
 	public FeatureExtractionPolarity(String review)
 	{
 		this.review = review;
 		ngrams =  new Ngrams(review);
 		this.Lines = new ArrayList<>();
+		unigramFeatureSet =  new HashMap<>();
 		BagOfWords = ngrams.getWordSplit();
-		negationListMap();
-		fillEmoticonMap();
+		staticObjects();
 		BreakInLines();
-		
+
+	}
+	public void staticObjects(){
+		if(negationList.size() == 0 )
+			negationListMap();
+		if(emotScoreMap.size() == 0)
+			fillEmoticonMap();
+		if(unigramFeatureSet.size() == 0)
+			load();
 	}
 	public void  cleanReview(){
 		review = review.replaceAll("(..)+", "");
@@ -53,9 +68,25 @@ public class FeatureExtractionPolarity {
 		this.emotScoreMap.put("</3", -1);
 		//this.emotScoreMap.put("", 0);
 
-}
-	
-	
+	}
+	public void load(){
+		try {
+			br = new BufferedReader(new FileReader("/home/rahul/Development/SentimentAnalysis/"
+					+ "features/featureSetPolarity_1_02.txt"));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				String[] row = line.split(",");
+				unigramFeatureSet.put(row[1], Integer.parseInt(row[0]));
+			}
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
 	public void negationListMap()
 	{
 		this.negationList.put("no", -1);
@@ -196,6 +227,7 @@ public class FeatureExtractionPolarity {
 	/**
 	 * Extract out sentences from the reviews.
 	 * to take into account the negative lists
+	 * Later Check Stanford Document tokenizer
 	 */
 
 	private void BreakInLines()
@@ -203,7 +235,7 @@ public class FeatureExtractionPolarity {
 		//this.Lines = review.split(". ");
 		BreakIterator border = BreakIterator.getSentenceInstance(Locale.US);
 		border.setText(review);
-	//	System.out.println(review);
+		//	System.out.println(review);
 		int start = border.first();
 		//iterate, creating sentences out of all the Strings between the given boundaries
 		for (int end = border.next(); end != BreakIterator.DONE; start = end, end = border.next()) {
@@ -215,7 +247,18 @@ public class FeatureExtractionPolarity {
 	}
 
 
-
+	public HashMap<Integer, Boolean> getReviewUnigrams(){
+		String FilterReview = review.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
+		String [] words = FilterReview.split("\\s+");
+		for (String string : words) {
+			if(!stopwords.is(string)){
+				if(unigramFeatureSet.containsKey(string)){
+					this.reviewUnigrams.put(unigramFeatureSet.get(string), true);
+				}
+			}
+		}
+		return this.reviewUnigrams;
+	}
 
 
 }

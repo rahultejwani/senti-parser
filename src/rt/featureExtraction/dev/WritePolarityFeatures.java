@@ -9,9 +9,10 @@ import java.util.HashMap;
 public class WritePolarityFeatures {
 	private ArrayList<String> lines;
 	private ArrayList<Integer> polarity;
-	private HashMap<String, Integer> UnigramFeatureSet;
+	
 //	private ArrayList<Integer> intensity;
 	SlurpTrainingSetPolarity sts ;
+	
 	public WritePolarityFeatures() {
 		
 		try {
@@ -20,7 +21,7 @@ public class WritePolarityFeatures {
 			this.lines = sts.getLines();
 		//	this.intensity = sts.getIntensityList();
 			this.polarity = sts.getPolarityList();
-			this.UnigramFeatureSet = sts.getUnigramFeatureSet();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,7 +38,7 @@ public class WritePolarityFeatures {
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(
 					new FileWriter("/home/rahul/Development/SentimentAnalysis/features"
-							+ "/featurePolarity_1_04_withNegation.csv"));
+							+ "/featurePolarity_1_06_Reduced_unigrams.csv"));
 			for (String string : lines) {
 				FeatureExtractionPolarity fep =  new FeatureExtractionPolarity(string);
 		//		bufferedWriter.write(String.valueOf(fep.getWordCount()));
@@ -51,6 +52,17 @@ public class WritePolarityFeatures {
 				bufferedWriter.write(",");
 				bufferedWriter.write(String.valueOf(fep.getTrigramScore()));
 				bufferedWriter.write(",");
+				HashMap<Integer, Boolean> unigramFeatures = fep.getReviewUnigrams();
+				for (int i = 0; i < 4177; i++) {
+					if(unigramFeatures.containsKey(i)){
+						bufferedWriter.write("1");
+						bufferedWriter.write(",");
+					}
+					else{
+						bufferedWriter.write("0");
+						bufferedWriter.write(",");
+					}
+				}
 				bufferedWriter.write(String.valueOf(fep.getEmotcionScore()));
 				
 				bufferedWriter.newLine();

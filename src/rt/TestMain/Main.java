@@ -2,6 +2,7 @@ package rt.TestMain;
 
 import java.util.ArrayList;
 
+import rt.featureExtraction.dev.CleanFeatureSet;
 import rt.featureExtraction.dev.FeatureExtractionPolarity;
 import rt.featureExtraction.dev.Ngrams;
 import rt.featureExtraction.dev.POStagging;
@@ -71,6 +72,7 @@ public class Main {
 		//writing polarity features file
 		WritePolarityFeatures wpf = new WritePolarityFeatures();
 		wpf.write();
+//		CleanFeatureSet csf =new CleanFeatureSet();
 		
 //		CreateTrainingSet cts = new CreateTrainingSet();
 //		cts.writeFiles();
