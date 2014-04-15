@@ -40,40 +40,43 @@ public class Main {
 		
 		// testing polarity extracted features
 		
-/*		
-		FeatureExtractionPolarity fep = new FeatureExtractionPolarity("i am very good today. Feeling a"
-				+ " lot better. :) hope it continues the same. Excited!!! :D ");
-		double unigram = fep.getUnigramScore();
-		double bigram = fep.getBigramFirstScore();
-		System.out.println("Unigram Score:"+ unigram);
-		System.out.println("Bigram Score:"+ bigram);
-		System.out.println("emoticon score:" + fep.getEmotcionScore());
-		System.out.println("trigram score:" + fep.getTrigramScore());
-		System.out.println("Size:"+ fep.getWordCount());
-		System.out.println("*********************************************************");
-
-//		fep = new FeatureExtractionPolarity("i am  not very good today. Feeling"
-//				+ "  hardly better. :) hope it continues the same. Not excited!!! :D "
-//				+ ". Not so good work");
-		fep = new FeatureExtractionPolarity("i have an exam today. feeling bored. seminar attendend.");
-		unigram = fep.getUnigramScore();
-		bigram = fep.getBigramFirstScore();
-		System.out.println("Unigram Score:"+ unigram);
-		System.out.println("Bigram Score:"+ bigram);
-		System.out.println("emoticon score:" + fep.getEmotcionScore());
-		System.out.println("trigram score:" + fep.getTrigramScore());
-		System.out.println("Size:"+ fep.getWordCount());
-		System.out.println("*********************************************************");
-		//fep.BreakInLines();
-		//System.out.println("punctuation score:" + fep.getPunctuationScore());
+		
+//		FeatureExtractionPolarity fep = new FeatureExtractionPolarity("");
+//		double unigram = fep.getUnigramScore();
+//		double bigram = fep.getBigramFirstScore();
+//		System.out.println("Unigram Score:"+ unigram);
+//		System.out.println("Bigram Score:"+ bigram);
+//		System.out.println("emoticon score:" + fep.getEmotcionScore());
+//		System.out.println("trigram score:" + fep.getTrigramScore());
+//		System.out.println("Final Score :  "+ (0.6*unigram +.1*bigram + .1*fep.getTrigramScore()+.2*
+//				fep.getEmotcionScore()));
+//		System.out.println("Size:"+ fep.getWordCount());
+//		System.out.println("*********************************************************");
+//
+////		fep = new FeatureExtractionPolarity("i am  not very good today. Feeling"
+////				+ "  hardly better. :) hope it continues the same. Not excited!!! :D "
+////				+ ". Not so good work");
+//		fep = new FeatureExtractionPolarity("i have an exam today. feeling bored. seminar attendend.");
+//		unigram = fep.getUnigramScore();
+//		bigram = fep.getBigramFirstScore();
+//		System.out.println("Unigram Score:"+ unigram);
+//		System.out.println("Bigram Score:"+ bigram);
+//		System.out.println("emoticon score:" + fep.getEmotcionScore());
+//		System.out.println("trigram score:" + fep.getTrigramScore());
+//		System.out.println("Size:"+ fep.getWordCount());
+//		System.out.println("Final Score :  "+ (0.5*unigram +.15*bigram + .15*fep.getTrigramScore()+.2*
+//				fep.getEmotcionScore()));
+//		System.out.println("*********************************************************");
+//		//fep.BreakInLines();
+//		//System.out.println("punctuation score:" + fep.getPunctuationScore());
 		 
-*/		 
+	 
 		
 		//writing polarity features file
 		WritePolarityFeatures wpf = new WritePolarityFeatures();
 		wpf.write();
-//		CleanFeatureSet csf =new CleanFeatureSet();
-		
+//	CleanFeatureSet csf =new CleanFeatureSet();
+	//	csf.clean();
 //		CreateTrainingSet cts = new CreateTrainingSet();
 //		cts.writeFiles();
 		

@@ -1,5 +1,10 @@
 package rt.featureExtraction.dev;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,7 +12,31 @@ public class FeatureExtractionIntensity {
 	
 	private String review;
 	private String[] BagOfWords;
+	private static HashMap<String, Integer> unigramFeatureSet;
+	private BufferedReader br;
 	
+	
+	public void staticObjects(){
+		if(unigramFeatureSet.size() == 0)
+			load();
+	}
+	public void load(){
+		try {
+			br = new BufferedReader(new FileReader("/home/rahul/Development/"
+					+ "SentimentAnalysis/IntensityUnigramSet.csv"));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				String[] row = line.split("#");
+				unigramFeatureSet.put(row[0], 0);
+			}
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
 	public int getCapitalScore(String str)
 	{
 		int count =0;
@@ -21,6 +50,7 @@ public class FeatureExtractionIntensity {
 		}
 		return count;
 	}
+	
 	
 	public double getPunctuationScore()
 	{

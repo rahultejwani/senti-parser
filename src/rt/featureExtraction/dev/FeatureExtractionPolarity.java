@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.tartarus.snowball.SnowballProgram;
+
 import rt.textbean.dev.DictionaryBean;
 
 
@@ -27,6 +29,8 @@ public class FeatureExtractionPolarity {
 	private static HashMap<String, Integer> unigramFeatureSet;
 	private HashMap<Integer, Boolean> reviewUnigrams = new HashMap<>();
 	StopWords stopwords = new StopWords();
+	SnowballProgram stemmer;
+	Class stemClass;
 	public FeatureExtractionPolarity(String review)
 	{
 		this.review = review;
@@ -71,12 +75,13 @@ public class FeatureExtractionPolarity {
 	}
 	public void load(){
 		try {
-			br = new BufferedReader(new FileReader("/home/rahul/Development/SentimentAnalysis/"
-					+ "features/featureSetPolarity_1_02.txt"));
+			br = new BufferedReader(new FileReader("/home/rahul/Development/"
+					+ "SentimentAnalysis/f_p_stemmed_tagged.csv"));
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(",");
-				unigramFeatureSet.put(row[1], Integer.parseInt(row[0]));
+				unigramFeatureSet.put(row[1].toLowerCase(), Integer.parseInt(row[0]));
+			//	System.out.println(row[0]);
 			}
 		} catch (FileNotFoundException e) {
 
@@ -146,6 +151,7 @@ public class FeatureExtractionPolarity {
 		boolean b = false;
 		double score =0;
 		double lineScore = 0;
+		int wordPerLine = 0;
 		for (String line : Lines) {
 			String[] sentence = line.split("\\s+");
 			b = false;
@@ -160,7 +166,8 @@ public class FeatureExtractionPolarity {
 					else if (dictionary.containsKey(string + "#n"))
 						lineScore+=(dictionary.get(string + "#n") * -1);
 					else if (dictionary.containsKey(string + "#v"))
-						lineScore+=(dictionary.get(string + "#v") * -1);	
+						lineScore+=(dictionary.get(string + "#v") * -1);
+					wordPerLine++;
 				}
 				else
 				{
@@ -172,9 +179,12 @@ public class FeatureExtractionPolarity {
 						lineScore+=dictionary.get(string + "#n");
 					else if (dictionary.containsKey(string + "#v"))
 						lineScore+=dictionary.get(string + "#v");
+					wordPerLine++;
 				}
 			}
 			score += lineScore;
+			score /= wordPerLine;
+			wordPerLine = 0;
 		}
 
 		return score/NumOfSentences;
@@ -248,15 +258,31 @@ public class FeatureExtractionPolarity {
 
 
 	public HashMap<Integer, Boolean> getReviewUnigrams(){
-		String FilterReview = review.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
-		String [] words = FilterReview.split("\\s+");
-		for (String string : words) {
-			if(!stopwords.is(string)){
-				if(unigramFeatureSet.containsKey(string)){
-					this.reviewUnigrams.put(unigramFeatureSet.get(string), true);
+		try {
+			stemClass = Class.forName("org.tartarus.snowball.ext.englishStemmer");
+			stemmer = (SnowballProgram) stemClass.newInstance();
+			String FilterReview = review.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
+			String [] words = FilterReview.split("\\s+");
+			for (String string : words) {
+				if(!stopwords.is(string)){
+					stemmer.setCurrent(string);
+					string = stemmer.getCurrent();
+					if(unigramFeatureSet.containsKey(string)){
+						this.reviewUnigrams.put(unigramFeatureSet.get(string), true);
+					}
 				}
 			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		 
 		return this.reviewUnigrams;
 	}
 
