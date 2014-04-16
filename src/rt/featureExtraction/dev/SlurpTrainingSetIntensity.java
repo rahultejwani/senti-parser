@@ -1,35 +1,25 @@
 package rt.featureExtraction.dev;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import rt.textbean.dev.propertyBean;
 
-/**
- * Class for loading the training set in memory
- * @author rahultejwani
- *
- */
+public class SlurpTrainingSetIntensity {
 
-public class SlurpTrainingSetPolarity {
-	static final String sourcePath = (new propertyBean().getPolarityTraining());
+	static final String sourcePath = (new propertyBean().getIntensityTraining());
 	private BufferedReader br;
 	private ArrayList<String> lines = new ArrayList<>();
-	private ArrayList<Integer> polarity = new ArrayList<>();
-	private static HashMap<String, Integer> unigramFaetureSet;
+	private ArrayList<Integer> Intensity = new ArrayList<>();
 	/*
 	 * Loads the entire file to memory when the constructor is called
 	 */
-	public SlurpTrainingSetPolarity() throws IOException
+	public SlurpTrainingSetIntensity() throws IOException
 	{
-	//	System.out.println(sourcePath);
+		//System.out.println(sourcePath);
 		br = new BufferedReader(new FileReader(sourcePath));
 		String line = null;
 		while ((line = br.readLine()) != null) {
@@ -39,7 +29,7 @@ public class SlurpTrainingSetPolarity {
 			{
 				lines.add(row[0]);
 
-				polarity.add(Integer.parseInt(row[1]));
+				Intensity.add(Integer.parseInt(row[1]));
 			}
 		}
 		br.close();
@@ -51,13 +41,10 @@ public ArrayList<String> getLines()
 {
 	return this.lines;
 }
-public ArrayList<Integer> getPolarityList()
+public ArrayList<Integer> getIntensityList()
 {
-	return this.polarity;
+	return this.Intensity;
 }
 
-public HashMap<String, Integer> getUnigramFeatureSet()
-{
-	return unigramFaetureSet;
-}
+
 }

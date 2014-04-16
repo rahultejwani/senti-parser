@@ -30,7 +30,7 @@ public class FeatureExtractionPolarity {
 	private BufferedReader br;
 	private static HashMap<String, Integer> unigramFeatureSet;
 	private HashMap<Integer, Boolean> reviewUnigrams = new HashMap<>();
-	StopWords stopwords = new StopWords();
+	StopWords stopwords;
 	static DictionaryBean db;
 	SnowballProgram stemmer;
 	Class stemClass;
@@ -58,6 +58,8 @@ public class FeatureExtractionPolarity {
 			fillEmoticonMap();
 		if(unigramFeatureSet.size() == 0)
 			load();
+		if(stopwords == null)
+			stopwords = new StopWords();
 		
 	}
 	public void  cleanReview(){
@@ -85,8 +87,8 @@ public class FeatureExtractionPolarity {
 	}
 	public void load(){
 		try {
-			br = new BufferedReader(new FileReader("/home/rahul/Development/"
-					+ "SentimentAnalysis/f_p_stemmed_tagged.csv"));
+			//non stemmed emotional tagged words
+			br = new BufferedReader(new FileReader("/home/rahul/Development/SentimentAnalysis/PolarityUnigramSet.csv"));
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(",");
@@ -290,6 +292,12 @@ public class FeatureExtractionPolarity {
 
 		return this.reviewUnigrams;
 	}
+	
+	/**
+	 * This functions writes the features to a map in the format
+	 * <Feature_number, Category_count> 
+	 * @return
+	 */
 	public HashMap<Integer, Integer> getTaggedFeatures(){
 
 		String FilterReview = review.replaceAll("[^a-zA-Z ]", " ").toLowerCase();

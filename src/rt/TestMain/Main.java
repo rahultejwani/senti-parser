@@ -6,6 +6,7 @@ import rt.featureExtraction.dev.CleanFeatureSet;
 import rt.featureExtraction.dev.FeatureExtractionPolarity;
 import rt.featureExtraction.dev.Ngrams;
 import rt.featureExtraction.dev.POStagging;
+import rt.featureExtraction.dev.WriteIntensityFeatures;
 import rt.featureExtraction.dev.WritePolarityFeatures;
 import rt.fileManupulations.CreateTrainingSet;
 import rt.textbean.dev.DictionaryBean;
@@ -73,8 +74,16 @@ public class Main {
 	 
 		
 		//writing polarity features file
-		WritePolarityFeatures wpf = new WritePolarityFeatures();
-		wpf.write();
+//		WritePolarityFeatures wpf = new WritePolarityFeatures();
+//		wpf.write();
+		
+		//writing intensity features
+		
+		WriteIntensityFeatures wif = new WriteIntensityFeatures();
+		wif.write();
+		
+		
+		
 //	CleanFeatureSet csf =new CleanFeatureSet();
 	//	csf.clean();
 //		CreateTrainingSet cts = new CreateTrainingSet();

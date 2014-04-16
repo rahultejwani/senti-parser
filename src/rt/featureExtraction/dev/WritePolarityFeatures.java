@@ -9,19 +9,19 @@ import java.util.HashMap;
 public class WritePolarityFeatures {
 	private ArrayList<String> lines;
 	private ArrayList<Integer> polarity;
-	
-//	private ArrayList<Integer> intensity;
+
+	//	private ArrayList<Integer> intensity;
 	SlurpTrainingSetPolarity sts ;
-	
+
 	public WritePolarityFeatures() {
-		
+
 		try {
-			
+
 			sts = new SlurpTrainingSetPolarity();
 			this.lines = sts.getLines();
-		//	this.intensity = sts.getIntensityList();
+			//	this.intensity = sts.getIntensityList();
 			this.polarity = sts.getPolarityList();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,28 +38,28 @@ public class WritePolarityFeatures {
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(
 					new FileWriter("/home/rahul/Development/SentimentAnalysis/features"
-							+ "/f_tagged_180.csv"));
-			
-//			bufferedWriter.write("SentiUnigram");
-//			bufferedWriter.write(",");
-//			bufferedWriter.write("SentiBigram");
-//			bufferedWriter.write(",");
-//			bufferedWriter.write("SentiTrigram");
-//			bufferedWriter.write(",");
-//			for (int i = 0; i < 2505; i++) {
-//				bufferedWriter.write("Faeture" + String.valueOf(i+1));
-//				bufferedWriter.write(",");
-//			}
-//			bufferedWriter.write("EmoticonScore");
-//			bufferedWriter.write(",");
-//			bufferedWriter.write("Label");
-//			bufferedWriter.newLine();
+							+ "/f_p_1622_non-Stemmed.csv"));
+
+			//			bufferedWriter.write("SentiUnigram");
+			//			bufferedWriter.write(",");
+			//			bufferedWriter.write("SentiBigram");
+			//			bufferedWriter.write(",");
+			//			bufferedWriter.write("SentiTrigram");
+			//			bufferedWriter.write(",");
+			//			for (int i = 0; i < 2505; i++) {
+			//				bufferedWriter.write("Faeture" + String.valueOf(i+1));
+			//				bufferedWriter.write(",");
+			//			}
+			//			bufferedWriter.write("EmoticonScore");
+			//			bufferedWriter.write(",");
+			//			bufferedWriter.write("Label");
+			//			bufferedWriter.newLine();
 			for (String string : lines) {
 				FeatureExtractionPolarity fep =  new FeatureExtractionPolarity(string);
-		//		bufferedWriter.write(String.valueOf(fep.getWordCount()));
-		//		bufferedWriter.write(",");
-				
-				
+				//		bufferedWriter.write(String.valueOf(fep.getWordCount()));
+				//		bufferedWriter.write(",");
+
+
 				bufferedWriter.write(String.valueOf(fep.getUnigramScore()));
 				bufferedWriter.write(",");
 				bufferedWriter.write(String.valueOf(fep.getBigramFirstScore()));
@@ -68,9 +68,9 @@ public class WritePolarityFeatures {
 				bufferedWriter.write(",");
 				HashMap<Integer, Boolean> unigramFeatures = fep.getReviewUnigrams();
 				HashMap<Integer, Integer> taggedFeatures = fep.getTaggedFeatures();
-				
-/*				
- * for (int i = 0; i < 1380; i++) {
+
+				//to write unigram featues set depending on the size.		
+				for (int i = 0; i < 1622; i++) {
 					if(unigramFeatures.containsKey(i)){
 						bufferedWriter.write("1");
 						bufferedWriter.write(",");
@@ -80,8 +80,11 @@ public class WritePolarityFeatures {
 						bufferedWriter.write(",");
 					}
 				}
-*/
-				
+
+
+
+				//to write 180 features
+				/*				
 				for (int i = 2; i < 180; i++) {
 					if(taggedFeatures.containsKey(i))
 					{
@@ -92,17 +95,20 @@ public class WritePolarityFeatures {
 					}
 					bufferedWriter.write(",");
 				}
+
+
+				 */
 				bufferedWriter.write(String.valueOf(fep.getEmotcionScore()));
 				bufferedWriter.write(",");
 				bufferedWriter.write(String.valueOf(polarity.get(count)));
-				
-				
+
+
 				bufferedWriter.newLine();
 				count++;
 			}
 			bufferedWriter.close();
 			System.out.println("Feature file write complete :)");
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
