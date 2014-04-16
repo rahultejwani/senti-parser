@@ -38,7 +38,7 @@ public class WritePolarityFeatures {
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(
 					new FileWriter("/home/rahul/Development/SentimentAnalysis/features"
-							+ "/featurePolarity_stemmed_tagged.csv"));
+							+ "/f_tagged_180.csv"));
 			
 //			bufferedWriter.write("SentiUnigram");
 //			bufferedWriter.write(",");
@@ -67,7 +67,10 @@ public class WritePolarityFeatures {
 				bufferedWriter.write(String.valueOf(fep.getTrigramScore()));
 				bufferedWriter.write(",");
 				HashMap<Integer, Boolean> unigramFeatures = fep.getReviewUnigrams();
-				for (int i = 0; i < 1380; i++) {
+				HashMap<Integer, Integer> taggedFeatures = fep.getTaggedFeatures();
+				
+/*				
+ * for (int i = 0; i < 1380; i++) {
 					if(unigramFeatures.containsKey(i)){
 						bufferedWriter.write("1");
 						bufferedWriter.write(",");
@@ -76,6 +79,18 @@ public class WritePolarityFeatures {
 						bufferedWriter.write("0");
 						bufferedWriter.write(",");
 					}
+				}
+*/
+				
+				for (int i = 2; i < 180; i++) {
+					if(taggedFeatures.containsKey(i))
+					{
+						bufferedWriter.write(String.valueOf(taggedFeatures.get(i)));
+					}
+					else{
+						bufferedWriter.write("0");
+					}
+					bufferedWriter.write(",");
 				}
 				bufferedWriter.write(String.valueOf(fep.getEmotcionScore()));
 				bufferedWriter.write(",");

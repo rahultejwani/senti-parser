@@ -10,6 +10,7 @@ import java.util.Properties;
 public class propertyBean {
 	private String SourcePath;
 	private String LexiconPath;
+	private String TaggedDictionaryPath;
 	private String FeaturePath;
 	private String AdverbPath;
 	private String SentiWordPath;
@@ -30,6 +31,7 @@ public class propertyBean {
     		SourcePath = prop.getProperty("SourcePath");
     		LexiconPath = prop.getProperty("LexiconPath");
     		FeaturePath = prop.getProperty("FeatureFilePath");
+    		setTaggedDictionaryPath(prop.getProperty("TaggedDictionaryPath"));
     		setSentiWordPath(prop.getProperty("SentiWordPath"));
     		setAdverbPath(prop.getProperty("AdverbPath"));
     		setReviewPath(prop.getProperty("ReviewPath"));
@@ -100,6 +102,14 @@ public class propertyBean {
 
 	private void setPolarityTraining(String polarityTraining) {
 		PolarityTraining = polarityTraining;
+	}
+
+	public String getTaggedDictionaryPath() {
+		return TaggedDictionaryPath;
+	}
+
+	public void setTaggedDictionaryPath(String taggedDictionaryPath) {
+		TaggedDictionaryPath = taggedDictionaryPath;
 	}
 
 	

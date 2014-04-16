@@ -22,17 +22,20 @@ public class FeatureExtractionPolarity {
 	private Ngrams ngrams;
 	private String review;
 	private int  NumOfSentences = 0;
-	private static HashMap<String, Double> dictionary = new DictionaryBean().getDictionary();
+	private static HashMap<String, Double> dictionary = new HashMap<>() ;
+	private static HashMap<String, HashMap<String, Integer>> taggedDictionary = new HashMap<>();
+	private HashMap<Integer, Integer> taggedFeatures = new HashMap<>();
 	private String[] BagOfWords;
 	private ArrayList<String> Lines;
 	private BufferedReader br;
 	private static HashMap<String, Integer> unigramFeatureSet;
 	private HashMap<Integer, Boolean> reviewUnigrams = new HashMap<>();
 	StopWords stopwords = new StopWords();
+	static DictionaryBean db;
 	SnowballProgram stemmer;
 	Class stemClass;
 	public FeatureExtractionPolarity(String review)
-	{
+	{		
 		this.review = review;
 		ngrams =  new Ngrams(review);
 		this.Lines = new ArrayList<>();
@@ -43,12 +46,19 @@ public class FeatureExtractionPolarity {
 
 	}
 	public void staticObjects(){
+		if(db == null)
+			db = new DictionaryBean();
+		if(taggedDictionary.size()== 0)
+			taggedDictionary = db.getTaggedDictionary();
+		if(dictionary.size() == 0)
+			dictionary = db.getDictionary();
 		if(negationList.size() == 0 )
 			negationListMap();
 		if(emotScoreMap.size() == 0)
 			fillEmoticonMap();
 		if(unigramFeatureSet.size() == 0)
 			load();
+		
 	}
 	public void  cleanReview(){
 		review = review.replaceAll("(..)+", "");
@@ -81,7 +91,7 @@ public class FeatureExtractionPolarity {
 			while ((line = br.readLine()) != null) {
 				String[] row = line.split(",");
 				unigramFeatureSet.put(row[1].toLowerCase(), Integer.parseInt(row[0]));
-			//	System.out.println(row[0]);
+				//	System.out.println(row[0]);
 			}
 		} catch (FileNotFoundException e) {
 
@@ -139,11 +149,6 @@ public class FeatureExtractionPolarity {
 		}
 		return netScore;
 	}
-
-
-
-
-
 
 
 	public double getUnigramScore()
@@ -282,9 +287,30 @@ public class FeatureExtractionPolarity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
+
 		return this.reviewUnigrams;
 	}
+	public HashMap<Integer, Integer> getTaggedFeatures(){
 
+		String FilterReview = review.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
+		String [] words = FilterReview.split("\\s+");
+		for (String string : words) {
+			if(!stopwords.is(string)){
+				if(taggedDictionary.containsKey(string)){
+					//System.out.println("contains key");
+					HashMap<String, Integer> value = taggedDictionary.get(string);
+					for(Map.Entry<String, Integer> e: value.entrySet()){
+						if(!taggedFeatures.containsKey(e.getValue()))
+							taggedFeatures.put(e.getValue(), 1);
+						else{
+							int val = taggedFeatures.get(e.getValue()) + 1;
+							taggedFeatures.put(e.getValue(), val);
+						}
+					}
+				}
+			}
+		} 
+		return this.taggedFeatures;
+	}
 
 }
